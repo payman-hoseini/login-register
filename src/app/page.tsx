@@ -10,7 +10,7 @@ export default function Home() {
           <div className="absolute top-10 left-10">
               <Image src={logo} alt="Logo" width={100} height={100} className=""/>
           </div>
-          <div className="bg-form w-[400px] max-w-[90%] px-6 py-4 rounded-[40px]">
+          <div className="bg-form w-[400px] max-w-[90%] px-6 py-4 rounded-[30px]">
               <div className="flex justify-between items-center">
                 <h2>Welcome to Fortuna</h2>
                 <div className="text-sm">

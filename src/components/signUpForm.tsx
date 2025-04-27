@@ -81,12 +81,12 @@ const SignUpForm: React.FC = () => {
                     placeholder="FirstName"
                     name="firstName"
                     type="text"
-                    className="mt-1 w-full p-2 border border-gr rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
+                    className="text-sm mt-1 w-full p-2 border border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
                   />
                   <ErrorMessage
                     name="firstName"
                     component="div"
-                    className="text-red-600 text-sm mt-1"
+                    className="text-red-600 text-[10px] mt-1"
                   />
                 </div>
                 {/* Last Name */}
@@ -95,12 +95,12 @@ const SignUpForm: React.FC = () => {
                     placeholder="Last Name"
                     name="lastName"
                     type="text"
-                    className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
+                    className="text-sm mt-1 w-full p-2 border border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
                   />
                   <ErrorMessage
                     name="lastName"
                     component="div"
-                    className="text-red-600 text-sm mt-1"
+                    className="text-red-600 text-[10px] mt-1"
                   />
                 </div>
 
@@ -111,12 +111,12 @@ const SignUpForm: React.FC = () => {
                   placeholder="Email"
                   name="email"
                   type="email"
-                  className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
+                  className="text-sm mt-1 w-full p-2 border border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
                 />
                 <ErrorMessage
                   name="email"
                   component="div"
-                  className="text-red-600 text-sm mt-1"
+                  className="text-red-600 text-[10px] mt-1"
                 />
               </div>
 
@@ -131,12 +131,22 @@ const SignUpForm: React.FC = () => {
                   getOptionLabel={opt => opt.label}
                   getOptionValue={opt => opt.value}
                   onChange={option => setFieldValue('country', option)}
-                  className="mt-1"
+                  className="text-sm mt-1"
+                  styles={{
+                    control: (provided, state) => ({
+                      ...provided,
+                      border: state.isFocused ? '2px solid #CE3603' : '1px solid #8C8C8C',
+                      boxShadow: 'none',
+                      '&:hover': {
+                        border: state.isFocused ? '2px solid #CE3603' : '1px solid #8C8C8C',
+                      },
+                    }),
+                  }}
                 />
                 <ErrorMessage
                   name="country"
                   component="div"
-                  className="text-red-600 text-sm mt-1"
+                  className="text-red-600 text-[10px] mt-1"
                 />
               </div>
 
@@ -151,11 +161,12 @@ const SignUpForm: React.FC = () => {
                     name: 'phone',
                   }}
                   containerClass="mt-1"
+                  inputClass="w-full p-2 border border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
                 />
                 <ErrorMessage
                   name="phone"
                   component="div"
-                  className="text-red-600 text-sm mt-1"
+                  className="text-red-600 text-[10px] mt-1"
                 />
               </div>
 
@@ -165,12 +176,12 @@ const SignUpForm: React.FC = () => {
                   placeholder="Password"
                   name="password"
                   type="password"
-                  className="mt-1 w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
+                  className="text-sm mt-1 w-full p-2 border border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
                 />
                 <ErrorMessage
                   name="password"
                   component="div"
-                  className="text-red-600 text-sm mt-1"
+                  className="text-red-600 text-[10px] mt-1"
                 />
               </div>
 
@@ -180,41 +191,44 @@ const SignUpForm: React.FC = () => {
                   <Field
                     type="checkbox"
                     name="agreeRisk"
-                    className="h-4 w-4 text-blue-600"
+                    className="h-3 w-3"
+                    style={{ accentColor: '#CE3603' }}
                   />
-                  <label htmlFor="agreeRisk" className="ml-2 text-sm">
+                  <label htmlFor="agreeRisk" className="ml-2 text-[10px] text-primary">
                     I have read and agree to the RISK DISCLAIMER
                   </label>
                 </div>
                 <ErrorMessage
                   name="agreeRisk"
                   component="div"
-                  className="text-red-600 text-sm ml-6"
+                  className="text-red-600 text-[10px] ml-6"
                 />
 
                 <div className="flex items-center">
                   <Field
                     type="checkbox"
                     name="agreeTnC"
-                    className="h-4 w-4 text-blue-600"
+                    className="h-3 w-3"
+                    style={{ accentColor: '#CE3603' }}
                   />
-                  <label htmlFor="agreeTnC" className="ml-2 text-sm">
+                  <label htmlFor="agreeTnC" className="ml-2 text-[10px] text-primary">
                     I have read and agree to the T&Cs
                   </label>
                 </div>
                 <ErrorMessage
                   name="agreeTnC"
                   component="div"
-                  className="text-red-600 text-sm ml-6"
+                  className="text-red-600 text-[10px] ml-6"
                 />
 
                 <div className="flex items-center">
                   <Field
                     type="checkbox"
                     name="newsletter"
-                    className="h-4 w-4 text-blue-600"
+                    className="h-3 w-3"
+                    style={{ accentColor: '#CE3603' }}
                   />
-                  <label htmlFor="newsletter" className="ml-2 text-sm">
+                  <label htmlFor="newsletter" className="ml-2 text-[10px]">
                     I would like to receive news, analysis, marketing, etc.
                   </label>
                 </div>
@@ -224,7 +238,7 @@ const SignUpForm: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3 mt-4 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 transition duration-200"
+                className="w-full py-3 mt-4 bg-btn text-white font-semibold rounded-2xl hover:bg-opacity-50 transition duration-200"
               >
                 Create Account
               </button>
