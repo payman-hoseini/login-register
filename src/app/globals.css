@@ -3,25 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --black : rgb(10, 9, 8);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.background {
+    background-color: var(--black);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 0px -150px;
 }
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+@media (min-width: 1300px) {
+    .background {
+        background: url(./../../public/images/gold.jpg);
+        background-color: transparent;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 0px -150px;
+    }
 }

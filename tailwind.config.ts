@@ -8,9 +8,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+      colors : {
+        "btn" : "hsl(26, 77, 50)",
+        "primary" : "hsl(25, 97, 41)",
+        "form" : "hsl(200,100,99)",
+        "gray" : "hsl(0,0,55)",
+        "black" : "var(--black)",
+        "border" : "hsl(26, 77, 50)"
       },
     },
   },
