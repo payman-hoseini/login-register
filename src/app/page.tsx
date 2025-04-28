@@ -15,7 +15,7 @@ export default function Home() {
                 <h2 className="text-sm">Welcome to Fortuna Markets</h2>
                 <div className="text-xs">
                   <p className="text-gray">Have an Account?</p>
-                  <Link href="/" className="text-primary">Sign In</Link>
+                  <Link href="/signIn" className="text-primary">Sign In</Link>
                 </div>
               </div>
               <h1 className="text-4xl font-semibold text-black">Sign Up</h1>
