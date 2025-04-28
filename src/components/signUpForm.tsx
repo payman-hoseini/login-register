@@ -26,13 +26,14 @@ interface FormValues {
 
 const SignUpForm: React.FC = () => {
   const countryOptions = React.useMemo(() => countryList().getData(), []);
-
+  const phoneRegex = /^[0-9]+$/;
+  
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
     email: Yup.string().email('Invalid email').required('Email is required'),
     country: Yup.object<CountryOption>().nullable().required('Country is required'),
-    phone: Yup.string().required('Phone Number is required'),
+    phone: Yup.string().required('Phone Number is required').matches(phoneRegex, 'Phone number must be numeric'),
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters')
       .required('Password is required'),
@@ -63,7 +64,7 @@ const SignUpForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6">
+    <div className="max-w-md mx-auto px-6 pt-6">
       <Formik<FormValues>
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -137,6 +138,7 @@ const SignUpForm: React.FC = () => {
                       ...provided,
                       border: state.isFocused ? '2px solid #CE3603' : '1px solid #8C8C8C',
                       boxShadow: 'none',
+                      borderRadius: '0.5rem',
                       '&:hover': {
                         border: state.isFocused ? '2px solid #CE3603' : '1px solid #8C8C8C',
                       },
@@ -161,7 +163,17 @@ const SignUpForm: React.FC = () => {
                     name: 'phone',
                   }}
                   containerClass="mt-1"
-                  inputClass="w-full p-2 border border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
+                  inputClass="w-full p-2 border border-gray focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
+                  inputStyle={{ 
+                    width: '100%',
+                    border: '1px solid #8C8C8C',
+                    borderRadius: '0.5rem',      
+                    outline: 'none',
+                  }}
+                  containerStyle={{
+                    marginTop: '0.25rem',
+                    borderRadius: '0.5rem',      
+                  }}
                 />
                 <ErrorMessage
                   name="phone"

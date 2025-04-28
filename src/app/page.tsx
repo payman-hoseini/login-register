@@ -12,15 +12,18 @@ export default function Home() {
           </div>
           <div className="bg-form w-[400px] max-w-[90%] px-6 py-4 rounded-[30px]">
               <div className="flex justify-between items-center">
-                <h2>Welcome to Fortuna</h2>
-                <div className="text-sm">
+                <h2 className="text-sm">Welcome to Fortuna Markets</h2>
+                <div className="text-xs">
                   <p className="text-gray">Have an Account?</p>
                   <Link href="/" className="text-primary">Sign In</Link>
                 </div>
               </div>
-              <h1 className="text-4xl font-semibold">Sign Up</h1>
+              <h1 className="text-4xl font-semibold text-black">Sign Up</h1>
               <div>
                 <SignUpForm/>
+              </div>
+              <div className="px-6 mt-2">
+                <p className="text-[10px] text-gray text-balance">*Restricted Regions: Fortuna Markets Limited does not provide services for the residents of certain countries, such as the USA, UAE, Turkey, Israel.</p>
               </div>
           </div>
         </div>
