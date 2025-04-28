@@ -1,11 +1,15 @@
 'use client'
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import PhoneInput from 'react-phone-input-2';
 import Select from 'react-select';
 import countryList from 'react-select-country-list';
 import 'react-phone-input-2/lib/style.css';
+import { useRouter } from 'next/navigation';
+import { Eye, EyeOff } from 'lucide-react'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export interface CountryOption {
   label: string;
@@ -54,17 +58,48 @@ const SignUpForm: React.FC = () => {
     newsletter: false,
   };
 
-  const handleSubmit = (
+  const handleSubmit = async(
     values: FormValues,
     { setSubmitting, resetForm }: FormikHelpers<FormValues>
   ) => {
-    console.log('Form data', values);
+    try {
+      const res = await fetch('/api/signUp',{
+        method : "POST",
+        headers : {
+            'Content-Type': 'application/json'
+        },
+        body : JSON.stringify(values)
+    })
+    if(!res.ok){
+      const errorData = await res.json()
+      toast.error(errorData.error || 'Registration error!');
+      setSubmitting(false);
+    }
     setSubmitting(false);
     resetForm();
+    toast.success('Registration successful!');
+    router.push('/')
+    } catch (error : any) {
+      toast.error(error.message || 'Registration error!');
+      setSubmitting(false);
+    }
   };
 
+  const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter()
   return (
     <div className="max-w-md mx-auto px-6 pt-6">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Formik<FormValues>
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -184,12 +219,29 @@ const SignUpForm: React.FC = () => {
 
               {/* Password */}
               <div>
-                <Field
-                  placeholder="Password"
-                  name="password"
-                  type="password"
-                  className="text-sm mt-1 w-full p-2 border border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
-                />
+                <Field name="password">
+                  {({ field }: { field: { name: string; value: string; onChange: any; onBlur: any } }) => (
+                    <div className="relative w-full mt-1">
+                      <input
+                        {...field}
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Password"
+                        className="w-full p-2 text-sm border border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(prev => !prev)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 focus:outline-none"
+                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      >
+                        {showPassword 
+                          ? <EyeOff size={20} /> 
+                          : <Eye size={20} />
+                        }
+                      </button>
+                    </div>
+                  )}
+                </Field>
                 <ErrorMessage
                   name="password"
                   component="div"
