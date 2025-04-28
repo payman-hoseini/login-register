@@ -6,6 +6,10 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { Eye, EyeOff } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export interface LoginFormValues {
   loginMethod: 'email' | 'phone'
@@ -35,14 +39,15 @@ const validationSchema = Yup.object().shape({
       otherwise: (schema: Yup.StringSchema) => schema.notRequired(),
     }),
   password: Yup.string()
-    .min(6, 'Password must be at least 6 characters')
+    .min(8, 'Password must be at least 8 characters')
     .required('Password is required'),
 })
 
 const LoginForm: React.FC = () => {
   const [method, setMethod] = useState<'email' | 'phone'>('email')
   const [showPassword, setShowPassword] = useState(false)
-
+  const router = useRouter()
+  
   const initialValues: LoginFormValues = {
     loginMethod: method,
     email: '',
@@ -50,17 +55,50 @@ const LoginForm: React.FC = () => {
     password: '',
   }
 
-  const handleSubmit = (
+  const handleSubmit = async (
     values: LoginFormValues,
-    { setSubmitting }: FormikHelpers<LoginFormValues>
+    { setSubmitting, resetForm }: FormikHelpers<LoginFormValues>
   ) => {
-    console.log('Login with', values)
-    setSubmitting(false)
-    // TODO: call your login API
+    const payload =
+      values.loginMethod === 'email'
+        ? { email: values.email, password: values.password }
+        : { phone: values.phone, password: values.password }
+
+    try {
+      const res = await fetch('/api/signIn/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...payload, method: values.loginMethod }),
+      })
+      if (!res.ok) {
+        const errorData = await res.json()
+        toast.error(errorData.error || 'Login error!')
+        return
+      }
+      toast.success('Login successful!')
+      resetForm()
+      router.push('/')
+    } catch (error: any) {
+      toast.error(error.message || 'Login error!')
+    } finally {
+      setSubmitting(false)
+    }
   }
+
 
   return (
     <div className="max-w-md mx-auto p-6">
+        <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+        />
       <div className="flex justify-center mb-4">
         {(['email', 'phone'] as const).map((m) => (
           <button
@@ -73,7 +111,6 @@ const LoginForm: React.FC = () => {
           </button>
         ))}
       </div>
-
       <Formik
         enableReinitialize
         initialValues={{ ...initialValues, loginMethod: method }}
@@ -81,9 +118,8 @@ const LoginForm: React.FC = () => {
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue, isSubmitting }) => (
-          <Form className="space-y-4 bg-white p-6 rounded-lg shadow">
+          <Form className="space-y-4 ">
             <Field name="loginMethod" type="hidden" value={method} />
-
             <AnimatePresence mode="wait">
               {method === 'email' && (
                 <motion.div
@@ -155,10 +191,13 @@ const LoginForm: React.FC = () => {
                   onClick={() => setShowPassword(prev => !prev)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 focus:outline-none"
                 >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showPassword ?  <Eye size={20} /> : <EyeOff size={20} />}
                 </button>
               </div>
               <ErrorMessage name="password" component="div" className="text-red-600 text-xs mt-1" />
+            </div>
+            <div>
+                <Link href="/" className='text-xs text-primary hover:text-border'>Forget Password?</Link>
             </div>
             <button
               type="submit"

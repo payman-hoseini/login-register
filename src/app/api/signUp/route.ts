@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const res = await fetch(`/API/`, {
+    const res = await fetch(`API/user/signUp`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -21,12 +21,14 @@ export async function POST(request: Request) {
       })
     });
 
+    const data = await res.json();
     if (!res.ok) {
       const errorData = await res.json()
       const errormessage = JSON.stringify(errorData)
       return NextResponse.json({ error: errormessage  }, { status: res.status });
     }
-    return res;
+    
+    return NextResponse.json(data, { status: res.status });
     }
     catch(error) {
         console.error('Registration error!', error);
