@@ -104,7 +104,7 @@ const LoginForm: React.FC = () => {
           <button
             key={m}
             type="button"
-            className={`px-4 py-2 rounded-t-lg ${method === m ? 'bg-primary text-white' : 'bg-gray-200'}`}
+            className={`px-4 py-2 rounded-t-lg ${method === m ? 'bg-btn text-white' : 'bg-gray-200'}`}
             onClick={() => setMethod(m)}
           >
             {m === 'email' ? 'Email' : 'Phone'}
@@ -202,7 +202,7 @@ const LoginForm: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-2 bg-primary text-white rounded-lg hover:opacity-50 transition duration-200"
+              className="w-full py-3 bg-btn text-white rounded-2xl hover:opacity-50 transition duration-200"
             >
               Sign In
             </button>
