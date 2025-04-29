@@ -191,7 +191,7 @@ const LoginForm: React.FC = () => {
                   onClick={() => setShowPassword(prev => !prev)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 focus:outline-none"
                 >
-                  {showPassword ?  <Eye size={20} /> : <EyeOff size={20} />}
+                  {showPassword ?  <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
               <ErrorMessage name="password" component="div" className="text-red-600 text-xs mt-1" />
@@ -202,7 +202,7 @@ const LoginForm: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3 bg-btn text-white rounded-2xl hover:opacity-50 transition duration-200"
+              className="w-full font-semibold py-3 bg-btn text-white rounded-2xl hover:opacity-50 transition duration-200"
             >
               Sign In
             </button>
