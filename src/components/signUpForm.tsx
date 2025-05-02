@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers, FieldProps } from 'formik';
 import * as Yup from 'yup';
 import PhoneInput from 'react-phone-input-2';
 import Select from 'react-select';
@@ -79,8 +79,12 @@ const SignUpForm: React.FC = () => {
     resetForm();
     toast.success('Registration successful!');
     router.push('/')
-    } catch (error : any) {
-      toast.error(error.message || 'Registration error!');
+    } catch (error : unknown) {
+      const message =
+      error instanceof Error
+        ? error.message
+        : 'Registration error!';
+      toast.error(message);
       setSubmitting(false);
     }
   };
@@ -220,10 +224,11 @@ const SignUpForm: React.FC = () => {
               {/* Password */}
               <div>
                 <Field name="password">
-                  {({ field }: { field: { name: string; value: string; onChange: any; onBlur: any } }) => (
+                  {({ field }: FieldProps<FormValues>) => (
                     <div className="relative w-full mt-1">
                       <input
                         {...field}
+                        value={field.value.password || ''}
                         type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
                         className="w-full p-2 text-sm border border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"

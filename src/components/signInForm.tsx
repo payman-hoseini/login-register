@@ -1,11 +1,11 @@
 'use client'
 import React, { useState } from 'react'
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik'
+import { Formik, Form, Field, ErrorMessage, FormikHelpers, FieldProps } from 'formik'
 import * as Yup from 'yup'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { Eye, EyeOff } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence , MotionProps } from 'framer-motion'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation'
@@ -47,7 +47,14 @@ const LoginForm: React.FC = () => {
   const [method, setMethod] = useState<'email' | 'phone'>('email')
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
-  
+
+  const phoneAnimation: MotionProps = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+    transition: { duration: 0.3 },
+  };
+
   const initialValues: LoginFormValues = {
     loginMethod: method,
     email: '',
@@ -78,8 +85,12 @@ const LoginForm: React.FC = () => {
       toast.success('Login successful!')
       resetForm()
       router.push('/')
-    } catch (error: any) {
-      toast.error(error.message || 'Login error!')
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+        ? error.message
+        : 'Login error!';
+      toast.error(message)
     } finally {
       setSubmitting(false)
     }
@@ -112,12 +123,13 @@ const LoginForm: React.FC = () => {
         ))}
       </div>
       <Formik
+        <LoginFormValues>
         enableReinitialize
         initialValues={{ ...initialValues, loginMethod: method }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ values, setFieldValue, isSubmitting }) => (
+        {({ setFieldValue, isSubmitting }) => (
           <Form className="space-y-4 ">
             <Field name="loginMethod" type="hidden" value={method} />
             <AnimatePresence mode="wait">
@@ -142,17 +154,14 @@ const LoginForm: React.FC = () => {
               {method === 'phone' && (
                 <motion.div
                   key="phone"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                 {...phoneAnimation}
                 >
                   <Field name="phone">
-                    {({ field }: any) => (
+                    {({ field }: FieldProps<LoginFormValues>) => (
                       <PhoneInput
                         {...field}
                         country="us"
-                        value={field.value}
+                        value={field.value.phone}
                         onChange={(val) => setFieldValue('phone', val)}
                         inputClass="w-full p-2 border border-gray focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"
                         inputStyle={{ 
@@ -177,9 +186,10 @@ const LoginForm: React.FC = () => {
             <div>
               <div className="relative">
                 <Field name="password">
-                  {({ field }: any) => (
+                  {({ field }: FieldProps<LoginFormValues>) => (
                     <input
                       {...field}
+                      value={field.value.password}
                       type={showPassword ? 'text' : 'password'}
                       placeholder="Password"
                       className="w-full text-sm p-2 pr-10 border border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-border focus:border-primary duration-300"

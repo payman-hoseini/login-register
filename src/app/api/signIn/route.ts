@@ -5,7 +5,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { method, email, phone, password } = body;
 
-    let payload: Record<string, string> = { password };
+    const payload: Record<string, string> = { password };
     if (method === 'email') {
       payload.email = email;
     } else if (method === 'phone') {
@@ -29,10 +29,14 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(data, { status: res.status });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Login error!', err);
+    const message =
+    err instanceof Error
+      ? err.message
+      : 'An unexpected error occurred.';
     return NextResponse.json(
-      { error: 'An error has occurred.' },
+      { error: message },
       { status: 500 }
     );
   }
